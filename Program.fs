@@ -1,5 +1,8 @@
 ﻿open Arvore
 open Streams
+open Paralelo
+open System.Diagnostics
+
 
 [<EntryPoint>]
 let main argv =
@@ -44,5 +47,21 @@ let main argv =
     // Desafio: primeiros 10 primos com o Crivo de Eratóstenes lazy
     let primeirosCrivo = primosCrivo |> Seq.truncate 10 |> Seq.toList
     printfn "Primeiros 10 primos usando o Crivo de Eratóstenes: %A" primeirosCrivo
+
+    // Parte 4: Paralelismo Funcional
+    let listaGrande = [1 .. 10_000_000]
+
+    // Sequencial
+    let swSeq = Stopwatch.StartNew()
+    let resultadoSeq = somaQuadradosSequencial listaGrande
+    swSeq.Stop()
+    printfn "Soma dos quadrados (sequencial): %O" resultadoSeq // Changed %d to %O
+    printfn "Tempo (sequencial): %d ms" swSeq.ElapsedMilliseconds
+
+    let swPar = Stopwatch.StartNew()
+    let resultadoPar = somaQuadradosParalelo listaGrande
+    swPar.Stop()
+    printfn "Soma dos quadrados (paralelo): %O" resultadoPar   // Changed %d to %O
+    printfn "Tempo (paralelo): %d ms" swPar.ElapsedMilliseconds
 
     0
